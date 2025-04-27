@@ -5,6 +5,7 @@ package config
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -12,14 +13,32 @@ import (
 // Config tuzilmasi dastur uchun barcha kerakli sozlamalarni saqlaydi
 // Bu tuzilma bot ishga tushganda bir marta yuklanadi va butun dastur davomida ishlatiladi
 type Config struct {
-	TelegramToken string // Telegram bot tokeni - Botfather tomonidan berilgan maxsus identifikator
-	LogLevel      string // Log darajasi - qancha batafsil ma'lumot saqlanishini belgilaydi (debug, info, warn, error)
+	TelegramToken  string // Telegram bot tokeni - Botfather tomonidan berilgan maxsus identifikator
+	LogLevel       string // Log darajasi - qancha batafsil ma'lumot saqlanishini belgilaydi (debug, info, warn, error)
+	Mode           string // Bot ishlash rejimi - webhook yoki polling
+	webhookURLVal  string // Webhook URL manzili - faqat webhook rejimida ishlatiladi
+	webhookPortVal string // Webhook porti - faqat webhook rejimida ishlatiladi
 }
 
 // GetTelegramToken Telegram bot tokenini qaytaruvchi metod
 // Bu metod Config interfeysi talablarini qondirish uchun ishlatiladi
 func (c *Config) GetTelegramToken() string {
 	return c.TelegramToken
+}
+
+// IsWebhookMode botning webhook rejimida ishlashini tekshiradi
+func (c *Config) IsWebhookMode() bool {
+	return strings.ToLower(c.Mode) == "webhook"
+}
+
+// WebhookURL webhook URL manzilini qaytaradi
+func (c *Config) WebhookURL() string {
+	return c.webhookURLVal
+}
+
+// WebhookPort webhook portini qaytaradi
+func (c *Config) WebhookPort() string {
+	return c.webhookPortVal
 }
 
 // LoadConfig konfiguratsiya sozlamalarini .env faylidan va tizim muhit o'zgaruvchilaridan yuklaydi
@@ -37,13 +56,21 @@ func LoadConfig() *Config {
 	// Yangi konfiguratsiya obyektini yaratish
 	cfg := &Config{
 		// Muhit o'zgaruvchilaridan qiymatlarni olish, agar mavjud bo'lmasa standart qiymatlarni ishlatish
-		TelegramToken: getEnv("TELEGRAM_BOT_TOKEN", ""),
-		LogLevel:      getEnv("LOG_LEVEL", "info"),
+		TelegramToken:  getEnv("TELEGRAM_BOT_TOKEN", ""),
+		LogLevel:       getEnv("LOG_LEVEL", "info"),
+		Mode:           getEnv("MODE", "polling"), // Standart qiymat - polling
+		webhookURLVal:  getEnv("WEBHOOK_URL", ""),
+		webhookPortVal: getEnv("WEBHOOK_PORT", "8443"), // movov qismida 8443 port standart qo'yilgan.))
 	}
 
 	// Telegram tokeni mavjudligini tekshirish, chunki u bot ishlashi uchun muhim
 	if cfg.TelegramToken == "" {
 		log.Fatal("TELEGRAM_BOT_TOKEN o'zgaruvchisi topilmadi. Iltimos, .env faylida yoki tizim muhit o'zgaruvchilarida sozlang.")
+	}
+
+	// Webhook rejimida webhook URL manzili tekshiriladi
+	if cfg.IsWebhookMode() && cfg.WebhookURL() == "" {
+		log.Fatal("Webhook rejimida ishlash uchun WEBHOOK_URL o'zgaruvchisi kerak. Iltimos, .env faylida yoki tizim muhit o'zgaruvchilarida sozlang.")
 	}
 
 	return cfg
