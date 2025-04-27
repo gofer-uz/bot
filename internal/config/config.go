@@ -1,23 +1,27 @@
 // Package config dastur konfiguratsiya sozlamalarini boshqarish uchun mo'ljallangan
-// Bu paket .env faylidan va tizim muhit o'zgaruvchilaridan sozlamalarni yuklaydi
+// Bu paket config.yaml faylidan sozlamalarni yuklaydi
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
-	"github.com/joho/godotenv"
+	"gopkg.in/yaml.v3"
 )
 
 // Config tuzilmasi dastur uchun barcha kerakli sozlamalarni saqlaydi
 // Bu tuzilma bot ishga tushganda bir marta yuklanadi va butun dastur davomida ishlatiladi
 type Config struct {
-	TelegramToken  string // Telegram bot tokeni - Botfather tomonidan berilgan maxsus identifikator
-	LogLevel       string // Log darajasi - qancha batafsil ma'lumot saqlanishini belgilaydi (debug, info, warn, error)
-	Mode           string // Bot ishlash rejimi - webhook yoki polling
-	webhookURLVal  string // Webhook URL manzili - faqat webhook rejimida ishlatiladi
-	webhookPortVal string // Webhook porti - faqat webhook rejimida ishlatiladi
+	TelegramToken string `yaml:"telegram_token"` // Telegram bot tokeni - Botfather tomonidan berilgan maxsus identifikator
+	LogLevel      string `yaml:"log_level"`      // Log darajasi - qancha batafsil ma'lumot saqlanishini belgilaydi (debug, info, warn, error)
+	Mode          string `yaml:"mode"`           // Bot ishlash rejimi - webhook yoki polling
+	Webhook       struct {
+		URL  string `yaml:"url"`  // Webhook URL manzili - faqat webhook rejimida ishlatiladi
+		Port string `yaml:"port"` // Webhook porti - faqat webhook rejimida ishlatiladi
+	} `yaml:"webhook"`
 }
 
 // GetTelegramToken Telegram bot tokenini qaytaruvchi metod
@@ -33,57 +37,112 @@ func (c *Config) IsWebhookMode() bool {
 
 // WebhookURL webhook URL manzilini qaytaradi
 func (c *Config) WebhookURL() string {
-	return c.webhookURLVal
+	return c.Webhook.URL
 }
 
 // WebhookPort webhook portini qaytaradi
 func (c *Config) WebhookPort() string {
-	return c.webhookPortVal
+	return c.Webhook.Port
 }
 
-// LoadConfig konfiguratsiya sozlamalarini .env faylidan va tizim muhit o'zgaruvchilaridan yuklaydi
+// LoadConfig konfiguratsiya sozlamalarini config.yaml faylidan yuklaydi
 // Bu funksiya dastur ishga tushganda eng birinchi chaqirilishi kerak
 func LoadConfig() *Config {
-	// .env faylini yuklash (agar mavjud bo'lsa)
-	// Bu asosan mahalliy ishlab chiqish muhitida foydali hisoblanadi
-	err := godotenv.Load()
-	if err != nil {
-		// Xatolik yuzaga kelsa, bu faqat ogohlantirish sifatida ko'rib chiqiladi,
-		// chunki .env fayli bo'lmasligi mumkin (masalan, ishlab chiqarish muhitida)
-		log.Println("Ogohlantirish: .env fayli topilmadi, tizim muhit o'zgaruvchilari ishlatiladi")
+	// Standart qiymatlar bilan konfiguratsiya obyektini yaratish
+	cfg := &Config{
+		LogLevel: "info",
+		Mode:     "polling",
+	}
+	cfg.Webhook.Port = "8443" // Webhook uchun standart port
+
+	// Birinchi navbatda "config.yaml" ni tekshiramiz
+	configPaths := []string{
+		"config.yaml",                                      // Asosiy direktoriyada
+		"configs/config.yaml",                              // configs papkasida
+		filepath.Join("configs", "config.yaml"),            // Absolute path with configs folder
+		filepath.Join("internal", "config", "config.yaml"), // internal/config papkasida
 	}
 
-	// Yangi konfiguratsiya obyektini yaratish
-	cfg := &Config{
-		// Muhit o'zgaruvchilaridan qiymatlarni olish, agar mavjud bo'lmasa standart qiymatlarni ishlatish
-		TelegramToken:  getEnv("TELEGRAM_BOT_TOKEN", ""),
-		LogLevel:       getEnv("LOG_LEVEL", "info"),
-		Mode:           getEnv("MODE", "polling"), // Standart qiymat - polling
-		webhookURLVal:  getEnv("WEBHOOK_URL", ""),
-		webhookPortVal: getEnv("WEBHOOK_PORT", "8443"), // movov qismida 8443 port standart qo'yilgan.))
+	var configFile string
+	for _, path := range configPaths {
+		if _, err := os.Stat(path); err == nil {
+			configFile = path
+			break
+		}
+	}
+
+	// Agar config.yaml topilmasa
+	if configFile == "" {
+		log.Println("Ogohlantirish: config.yaml fayli topilmadi, standart qiymatlar ishlatiladi")
+		return createDefaultConfigIfNeeded(cfg)
+	}
+
+	// YAML faylini o'qish
+	yamlFile, err := os.ReadFile(configFile)
+	if err != nil {
+		log.Printf("Config faylini o'qishda xatolik: %v", err)
+		return createDefaultConfigIfNeeded(cfg)
+	}
+
+	// YAML faylini Config strukturasiga o'girish
+	err = yaml.Unmarshal(yamlFile, cfg)
+	if err != nil {
+		log.Printf("YAML formatini qayta ishlashda xatolik: %v", err)
+		return createDefaultConfigIfNeeded(cfg)
 	}
 
 	// Telegram tokeni mavjudligini tekshirish, chunki u bot ishlashi uchun muhim
 	if cfg.TelegramToken == "" {
-		log.Fatal("TELEGRAM_BOT_TOKEN o'zgaruvchisi topilmadi. Iltimos, .env faylida yoki tizim muhit o'zgaruvchilarida sozlang.")
+		log.Fatal("Telegram token topilmadi. Iltimos, config.yaml faylida 'telegram_token' parametrini sozlang.")
 	}
 
 	// Webhook rejimida webhook URL manzili tekshiriladi
 	if cfg.IsWebhookMode() && cfg.WebhookURL() == "" {
-		log.Fatal("Webhook rejimida ishlash uchun WEBHOOK_URL o'zgaruvchisi kerak. Iltimos, .env faylida yoki tizim muhit o'zgaruvchilarida sozlang.")
+		log.Fatal("Webhook rejimida ishlash uchun webhook URL manzili kerak. Iltimos, config.yaml faylida 'webhook.url' parametrini sozlang.")
 	}
 
 	return cfg
 }
 
-// getEnv muhit o'zgaruvchisini qiymatini oladi, agar topilmasa belgilangan standart qiymatni qaytaradi
-// Bu yordamchi funksiya konfiguratsiya yuklash jarayonida muhit o'zgaruvchilarini xavfsiz olish uchun ishlatiladi
-func getEnv(key, defaultValue string) string {
-	// Avval muhit o'zgaruvchisi qiymatini olishga harakat qilish
-	value := os.Getenv(key)
-	// Agar qiymat bo'sh bo'lsa, standart qiymatni qaytarish
-	if value == "" {
-		return defaultValue
+// createDefaultConfigIfNeeded agar config fayli topilmasa yangi standart config yaratadi
+func createDefaultConfigIfNeeded(cfg *Config) *Config {
+	// Telegram tokenini muhit o'zgaruvchilaridan olishga harakat qilish
+	if token := os.Getenv("TELEGRAM_BOT_TOKEN"); token != "" {
+		cfg.TelegramToken = token
 	}
-	return value
+
+	// Taklif qilinadigan standart konfiguratsiya yaratish
+	defaultConfig := `# Bot konfiguratsiyasi
+telegram_token: "" # Botfather tomonidan berilgan token
+log_level: "info"  # debug, info, warn, error
+mode: "polling"    # webhook yoki polling
+
+# Webhook sozlamalari (faqat webhook rejimida ishlatiladi)
+webhook:
+  url: ""          # https://example.com/your_token
+  port: "8443"     # 8443, 443, 80, 88 yoki 8080
+`
+
+	// Standart config faylini yaratish (configs papkasida)
+	configDir := "configs"
+	if _, err := os.Stat(configDir); os.IsNotExist(err) {
+		if err := os.MkdirAll(configDir, 0755); err != nil {
+			log.Printf("Configs papkasini yaratishda xatolik: %v", err)
+		}
+	}
+
+	configPath := filepath.Join(configDir, "config.yaml")
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		fmt.Println("Standart config.yaml fayli yaratilmoqda:", configPath)
+		if err := os.WriteFile(configPath, []byte(defaultConfig), 0644); err != nil {
+			log.Printf("Standart config faylini yaratishda xatolik: %v", err)
+		}
+	}
+
+	// Telegram tokeni mavjudligini tekshirish
+	if cfg.TelegramToken == "" {
+		log.Fatal("Telegram token topilmadi. Iltimos, configs/config.yaml faylida 'telegram_token' parametrini sozlang.")
+	}
+
+	return cfg
 }

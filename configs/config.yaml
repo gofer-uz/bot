@@ -1,0 +1,10 @@
+# Bot konfiguratsiyasi
+
+telegram_token: "" # Botfather tomonidan berilgan token
+log_level: "info"  # debug, info, warn, error
+mode: "polling"    # webhook yoki polling
+
+# Webhook sozlamalari (faqat webhook rejimida ishlatiladi)
+webhook:
+  url: ""          # https://example.com/your_token
+  port: "8443"     # 8443, 443, 80, 88 yoki 8080
