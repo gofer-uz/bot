@@ -95,32 +95,6 @@ func handleUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, log *logger.Logg
 	}
 }
 
-// welcomeNewUser yangi a'zolarga salomlashish xabarini yuboradi
-// Bu funksiya guruhga yangi foydalanuvchi qo'shilganda chaqiriladi
-func welcomeNewUser(bot *tgbotapi.BotAPI, chatID int64, user tgbotapi.User, log *logger.Logger) {
-	// Foydalanuvchi ismini olish
-	name := user.FirstName
-	if user.UserName != "" {
-		name = "@" + user.UserName
-	}
-
-	// Salomlashish xabarini tayyorlash
-	welcomeMsg := tgbotapi.NewMessage(chatID,
-		"👋 Salom "+name+"! GoferUz hamjamiyatiga xush kelibsiz!\n\n"+
-			"Go dasturlash tili bo'yicha qo'shimcha ma'lumot olish uchun botga /start buyrug'ini yuboring. "+
-			"Botda quyidagi buyruqlar mavjud:\n"+
-			"/help - buyruqlar ro'yxatini ko'rish\n"+
-			"/rules - hamjamiyat qoidalari bilan tanishish\n"+
-			"/roadmap - Go tilini o'rganish yo'l xaritasi\n"+
-			"/useful - foydali resurslar ro'yxati")
-
-	// Xabarni yuborish
-	_, err := bot.Send(welcomeMsg)
-	if err != nil {
-		log.Error("Yangi a'zoga salomlashish xabarini yuborishda xatolik:", err)
-	}
-}
-
 // mentionNewUser mentions a new user with a subtle suggestion to check the bot for community info
 // This function is called when a new user joins the group
 func mentionNewUser(bot *tgbotapi.BotAPI, chatID int64, user tgbotapi.User, log *logger.Logger) {
