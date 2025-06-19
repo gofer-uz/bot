@@ -8,8 +8,8 @@ import (
 
 	tele "gopkg.in/telebot.v3"
 
-	"bot-architecture/internal/config"
-	"bot-architecture/internal/handlers"
+	"github.com/gofer-uz/bot/internal/config"
+	"github.com/gofer-uz/bot/internal/handlers"
 )
 
 // App wraps telebot.Bot and handles lifecycle.

@@ -8,8 +8,8 @@ import (
 	"syscall"
 	"time"
 
-	"bot-architecture/internal/bot"
-	"bot-architecture/internal/config"
+	"github.com/gofer-uz/bot/internal/bot"
+	"github.com/gofer-uz/bot/internal/config"
 )
 
 func main() {

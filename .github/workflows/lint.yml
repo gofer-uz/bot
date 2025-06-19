@@ -1,0 +1,36 @@
+# .github/workflows/lint.yml
+name: Lint
+
+on:
+    push: # Runs on all branches including main
+    pull_request: # Also runs on PRs from forks or branches
+
+jobs:
+    lint:
+        name: GolangCI Lint
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 🧾 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Set up Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: "1.24"
+
+            - name: 🧰 Install dependencies
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y curl git jq
+
+            - name: 📥 Install golangci-lint
+              env:
+                  GOLANGCI_LINT_VERSION: v1.64.6
+              run: |
+                  echo "Using golangci-lint version $GOLANGCI_LINT_VERSION"
+                  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin $GOLANGCI_LINT_VERSION
+
+            - name: 🔍 Run golangci-lint
+              run: |
+                  golangci-lint run --out-format tab | sed -E 's|^([^:]+)|\x1b[31m\1\x1b[0m|'
