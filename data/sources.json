@@ -1,0 +1,243 @@
+{
+    "📘 Qo'llanma": [
+        {
+            "name": "Go by Example",
+            "desc": "Hands-on introduction to Go using annotated example programs.",
+            "link": "https://gobyexample.com/"
+        },
+        {
+            "name": "Tour of Go",
+            "desc": "Interactive introduction to Go fundamentals, straight from the official site.",
+            "link": "https://tour.golang.org/"
+        },
+        {
+            "name": "Effective Go",
+            "desc": "Official document on writing clear, idiomatic Go code.",
+            "link": "https://go.dev/doc/effective_go"
+        },
+        {
+            "name": "YourBasic Go Tutorials",
+            "desc": "Clear, practical Go tutorials covering basics, pitfalls, concurrency, and more.",
+            "link": "https://yourbasic.org/golang/tutorials/"
+        },
+        {
+            "name": "Golang-Learning-Resources",
+            "desc": "Curated GitHub list of Go learning resources, from beginner to advanced.",
+            "link": "https://github.com/azad25/Golang-Learning-Resources"
+        },
+        {
+            "name": "Learn Go with Tests",
+            "desc": "Test-driven approach to learning Go, ideal for robust software development.",
+            "link": "https://quii.gitbook.io/learn-go-with-tests/"
+        }
+    ],
+    "🎙️ Podkastlar": [
+        {
+            "name": "Go Time",
+            "desc": "Weekly podcast discussing Go news, best practices, and interviews with Go community leaders.",
+            "link": "https://changelog.com/gotime"
+        },
+        {
+            "name": "go podcast()",
+            "desc": "Bi-weekly, topic-based podcast on Go programming.",
+            "link": "https://gopodcast.com/"
+        },
+        {
+            "name": "Cup o’ Go",
+            "desc": "Short, weekly podcast summarizing the latest in the Go community.",
+            "link": "https://cupogo.dev/"
+        },
+        {
+            "name": "GolangShow",
+            "desc": "Podcast in English and Russian, covering Go news and interviews.",
+            "link": "https://golangshow.com/"
+        }
+    ],
+    "📚 Kitoblar": [
+        {
+            "name": "The Go Programming Language",
+            "desc": "Comprehensive and authoritative book by Alan A. A. Donovan and Brian W. Kernighan.",
+            "link": "https://www.gopl.io/"
+        },
+        {
+            "name": "Head First Go",
+            "desc": "Beginner-friendly book with interactive examples and clear explanations.",
+            "link": "https://www.oreilly.com/library/view/head-first-go/9781491969540/"
+        },
+        {
+            "name": "Programming in Go",
+            "desc": "Covers Go basics to advanced concurrency and systems programming.",
+            "link": "https://www.oreilly.com/library/view/programming-in-go/9780321774637/"
+        },
+        {
+            "name": "Go in Action",
+            "desc": "In-depth coverage of Go’s syntax, concurrency, and real-world applications.",
+            "link": "https://www.manning.com/books/go-in-action"
+        },
+        {
+            "name": "Concurrency in Go",
+            "desc": "Hands-on guide to writing concurrent programs in Go.",
+            "link": "https://www.oreilly.com/library/view/concurrency-in-go/9781491941294/"
+        },
+        {
+            "name": "Go Programming Cookbook",
+            "desc": "Practical recipes for Go development, including best practices and real-world examples.",
+            "link": "https://www.packtpub.com/product/go-programming-cookbook/9781783286836"
+        }
+    ],
+    "🎥 Videolar": [
+        {
+            "name": "Mastering Go: A Comprehensive Guide",
+            "desc": "Extensive YouTube course covering Go from basics to advanced topics.",
+            "link": "https://www.youtube.com/watch?v=N2GWXuj_IWg"
+        },
+        {
+            "name": "Golang Tutorial for Beginners | Full Go Course",
+            "desc": "YouTube course teaching Go by building a real CLI application.",
+            "link": "https://www.youtube.com/watch?v=yyUHQIec83I"
+        },
+        {
+            "name": "Golang Tutorial: Go Full Course",
+            "desc": "Detailed YouTube course with projects and deep dives into Go features.",
+            "link": "https://www.youtube.com/watch?v=YzLrWHZa-Kc"
+        },
+        {
+            "name": "Go: The Complete Bootcamp Course",
+            "desc": "Paid, highly-rated video course with animated lectures and hands-on exercises.",
+            "link": "https://www.udemy.com/course/go-the-complete-bootcamp-course-golang/"
+        },
+        {
+            "name": "Ultimate Go Live Lessons",
+            "desc": "Ardan Labs’ classroom Go training on video.",
+            "link": "https://www.ardanlabs.com/ultimate-go/"
+        }
+    ],
+    "📰 Yangiliklar va bloglar": [
+        {
+            "name": "Golang Weekly",
+            "desc": "Popular weekly newsletter featuring Go news, articles, and trending projects.",
+            "link": "https://golangweekly.com/"
+        },
+        {
+            "name": "Awesome Go Weekly",
+            "desc": "Weekly overview of popular Go news, articles, and packages.",
+            "link": "https://go.libhunt.com/newsletter"
+        },
+        {
+            "name": "Applied Go Weekly",
+            "desc": "Hand-curated, commented list of Go articles and projects delivered weekly.",
+            "link": "https://appliedgo.net/subscribe/"
+        },
+        {
+            "name": "Go Blog",
+            "desc": "Official Go blog with updates, tutorials, and release notes.",
+            "link": "https://blog.golang.org/"
+        }
+    ],
+    "👥 Hamjamiyatlar": [
+        {
+            "name": "Go Forum (GolangBridge)",
+            "desc": "Official Go programming forum for questions, answers, and project announcements.",
+            "link": "https://forum.golangbridge.org/"
+        },
+        {
+            "name": "Reddit r/golang",
+            "desc": "Large subreddit for Go discussions, news, and community support.",
+            "link": "https://www.reddit.com/r/golang/"
+        },
+        {
+            "name": "Gophers Slack",
+            "desc": "Major Slack workspace for Go developers with thousands of active members. Join via invite link.",
+            "link": "https://invite.slack.golangbridge.org/"
+        },
+        {
+            "name": "Gophers Discord",
+            "desc": "Live Discord server for Go programmers with active discussions.",
+            "link": "https://discord.gg/golang"
+        },
+        {
+            "name": "Stack Overflow Go",
+            "desc": "Public platform for Go programming questions and answers.",
+            "link": "https://stackoverflow.com/questions/tagged/go"
+        },
+        {
+            "name": "Golang Cafe",
+            "desc": "Community platform for Go developers worldwide with job opportunities.",
+            "link": "https://golang.cafe/"
+        },
+        {
+            "name": "Go Developers Network (Meetup)",
+            "desc": "Global meetup network for Go developers, hosting events worldwide.",
+            "link": "https://www.meetup.com/pro/go/"
+        },
+        {
+            "name": "GOLANG Чат",
+            "desc": "Russian-speaking Go programmers’ community sharing news, discussions, and jobs.",
+            "link": "https://t.me/golang_talk"
+        },
+        {
+            "name": "Golang Developers — русскоговорящее сообщество",
+            "desc": "Russian-speaking Golang community for discussions, news, and support.",
+            "link": "https://t.me/golang_ru"
+        },
+        {
+            "name": "Go-go!",
+            "desc": "Large Russian Go community with resources and job opportunities.",
+            "link": "https://t.me/gogolang"
+        },
+        {
+            "name": "Golang KZ",
+            "desc": "Kazakhstan Go community with roadmaps and job opportunities.",
+            "link": "https://t.me/go_kz"
+        },
+        {
+            "name": "GolangUA",
+            "desc": "Ukrainian Golang community with Slack and Facebook integration.",
+            "link": "https://t.me/golang_ua_official"
+        },
+        {
+            "name": "Golang Jobs",
+            "desc": "Telegram channel focused on Go job opportunities.",
+            "link": "https://t.me/golang_jobsgo"
+        },
+        {
+            "name": "Golang Uzbekistan",
+            "desc": "Golang community for Uzbek developers.",
+            "link": "https://t.me/golang_uz"
+        }
+    ],
+    "🧰 Kutubxonalar va toollar": [
+        {
+            "name": "Awesome Go",
+            "desc": "Curated list of awesome Go frameworks, libraries, and software.",
+            "link": "https://awesome-go.com/"
+        },
+        {
+            "name": "Go Wiki",
+            "desc": "Official Go wiki with community links, guides, and advanced topics.",
+            "link": "https://go.dev/wiki"
+        },
+        {
+            "name": "Go Playground",
+            "desc": "Official interactive Go playground for testing and sharing code online.",
+            "link": "https://play.golang.org/"
+        }
+    ],
+    "🚀 Qo'shimcha manbalar": [
+        {
+            "name": "Go Tools",
+            "desc": "Comprehensive list of Go tools and utilities.",
+            "link": "https://awesome-go.com/utilities/"
+        },
+        {
+            "name": "Go Patterns",
+            "desc": "Examples and explanations of Go design patterns.",
+            "link": "https://github.com/tmrts/go-patterns"
+        },
+        {
+            "name": "Go Proverbs",
+            "desc": "Collection of Go proverbs and idiomatic wisdom.",
+            "link": "https://go-proverbs.github.io/"
+        }
+    ]
+}

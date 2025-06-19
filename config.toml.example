@@ -1,0 +1,12 @@
+# Server configuration
+[server]
+public_url = "https://example.com"
+listen = ":8080"
+
+# Telegram configuration
+[telegram]
+token = "YOUR_TELEGRAM_BOT_TOKEN"
+
+# Database configuration
+[database]
+# placeholder for future database connection string
