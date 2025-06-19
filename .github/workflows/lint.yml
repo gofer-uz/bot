@@ -1,9 +1,8 @@
-# .github/workflows/lint.yml
 name: Lint
 
 on:
-    push: # Runs on all branches including main
-    pull_request: # Also runs on PRs from forks or branches
+    push: # Run on all branches, including main
+    pull_request:
 
 jobs:
     lint:
@@ -33,4 +32,9 @@ jobs:
 
             - name: 🔍 Run golangci-lint
               run: |
-                  golangci-lint run --out-format tab | sed -E 's|^([^:]+)|\x1b[31m\1\x1b[0m|'
+                  if ! golangci-lint run --out-format tab | sed -E 's|^([^:]+)|\x1b[31m\1\x1b[0m|'; then
+                    echo "❌ Lint issues detected"
+                    exit 1
+                  else
+                    echo "✅ Code is clean. No lint issues found."
+                  fi
